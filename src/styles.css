@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=DM+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -26,6 +27,12 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-red: var(--brand-red);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-yellow: var(--brand-yellow);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -62,39 +69,54 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.875rem;
+
+  /* Brand palette */
+  --brand-blue: oklch(0.55 0.2 258);
+  --brand-blue-deep: oklch(0.45 0.17 258);
+  --brand-red: oklch(0.6 0.22 25);
+  --brand-navy: oklch(0.24 0.07 258);
+  --brand-yellow: oklch(0.85 0.16 90);
+
   --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.24 0.07 258);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.24 0.07 258);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --popover-foreground: oklch(0.24 0.07 258);
+  --primary: oklch(0.55 0.2 258);
+  --primary-foreground: oklch(0.99 0.01 258);
+  --secondary: oklch(0.96 0.02 258);
+  --secondary-foreground: oklch(0.3 0.08 258);
+  --muted: oklch(0.96 0.015 258);
+  --muted-foreground: oklch(0.52 0.04 258);
+  --accent: oklch(0.95 0.04 25);
+  --accent-foreground: oklch(0.45 0.18 25);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.99 0.01 25);
+  --border: oklch(0.91 0.015 258);
+  --input: oklch(0.91 0.015 258);
+  --ring: oklch(0.55 0.2 258);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar-foreground: oklch(0.24 0.07 258);
+  --sidebar-primary: oklch(0.55 0.2 258);
+  --sidebar-primary-foreground: oklch(0.99 0.01 258);
+  --sidebar-accent: oklch(0.96 0.02 258);
+  --sidebar-accent-foreground: oklch(0.3 0.08 258);
+  --sidebar-border: oklch(0.91 0.015 258);
+  --sidebar-ring: oklch(0.55 0.2 258);
+
+  /* Gradients & shadows */
+  --gradient-hero: linear-gradient(135deg, oklch(0.55 0.2 258), oklch(0.45 0.17 262));
+  --gradient-navy: linear-gradient(160deg, oklch(0.28 0.08 258), oklch(0.2 0.06 258));
+  --shadow-soft: 0 10px 30px -12px oklch(0.55 0.2 258 / 0.25);
+  --shadow-card: 0 8px 24px -10px oklch(0.24 0.07 258 / 0.18);
+  --shadow-glow: 0 0 0 4px oklch(0.55 0.2 258 / 0.12);
 }
 
 .dark {
@@ -140,5 +162,12 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
