@@ -1,0 +1,10 @@
+# Netlify build configuration for this TanStack Start (Nitro) app.
+# `npm run build` runs `vite build`; Netlify sets NETLIFY=true during the build,
+# which makes vite.config.ts switch Nitro to the "netlify" preset. That emits the
+# SSR server function to .netlify/functions-internal/server and static assets to dist.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
