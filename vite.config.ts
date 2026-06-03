@@ -6,20 +6,37 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// When building on Netlify (process.env.NETLIFY is set during Netlify builds),
-// force Nitro to use the Netlify preset and emit the server function + static
-// assets in the layout Netlify expects. Outside Netlify (e.g. inside Lovable's
-// own build infra) this stays undefined so the default Cloudflare target is used.
+// --- Deploy-target detection -------------------------------------------------
+// Inside Lovable's own build infra none of these env flags are set, so Nitro keeps
+// its default Cloudflare target and the app builds/serves exactly as usual.
+
+// Netlify sets NETLIFY=true during its builds -> full SSR via the Netlify preset.
 const isNetlify = Boolean(process.env.NETLIFY);
 
-export default defineConfig({
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
-  },
-  ...(isNetlify
+// The GitHub Actions workflow (.github/workflows/deploy.yml) sets GITHUB_PAGES=true.
+// GitHub Pages is static-only hosting (no server), so we prerender the whole app to
+// static HTML, disable Nitro, and serve it from the repo subpath:
+//   https://<user>.github.io/science-made-easy/
+const isGithubPages = Boolean(process.env.GITHUB_PAGES);
+const githubPagesBase = "/science-made-easy/";
+
+const baseStart = { server: { entry: "server" } } as Record<string, unknown>;
+
+const targetConfig: Record<string, unknown> = isGithubPages
+  ? {
+      tanstackStart: {
+        ...baseStart,
+        // Prerender every page to static HTML so GitHub Pages can serve it.
+        prerender: { enabled: true, crawlLinks: true },
+        pages: [{ path: "/" }, { path: "/booking" }],
+      },
+      vite: { base: githubPagesBase },
+      // No server runtime on GitHub Pages -> skip Nitro and emit a pure static build.
+      nitro: false,
+    }
+  : isNetlify
     ? {
+        tanstackStart: baseStart,
         nitro: {
           preset: "netlify",
           output: {
@@ -29,5 +46,9 @@ export default defineConfig({
           },
         },
       }
-    : {}),
-});
+    : {
+        // Default: Lovable infra (Cloudflare). Nitro is auto-enabled in the sandbox.
+        tanstackStart: baseStart,
+      };
+
+export default defineConfig(targetConfig);
