@@ -1,8 +1,13 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 export default defineConfig({
-  tanstackStart: { server: { entry: "server" } },
+  tanstackStart: {
+    server: { entry: "server" },
+    prerender: { enabled: true, crawlLinks: true },
+    pages: [{ path: "/" }, { path: "/booking" }],
+  },
+  vite: { base: "/science-made-easy/" },
   nitro: {
-    preset: "github_pages",
+    preset: "node",
     output: { dir: ".output", serverDir: ".output/server", publicDir: ".output/public" },
   },
 });
