@@ -6,8 +6,5 @@ export default defineConfig({
     pages: [{ path: "/" }, { path: "/booking" }],
   },
   vite: { base: "/science-made-easy/" },
-  nitro: {
-    preset: "node",
-    output: { dir: ".output", serverDir: ".output/server", publicDir: ".output/public" },
-  },
+  nitro: false,
 });
